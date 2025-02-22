@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer } from "http";
 import { storage } from "./storage";
-import { insertUpdateSchema, insertFiredrillSchema, insertSubscriberSchema } from "@shared/schema";
+import { insertUpdateSchema, insertFiredrillSchema, insertSubscriberSchema, insertProjectSchema, insertProfileSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express) {
   // Updates routes
@@ -62,6 +62,52 @@ export async function registerRoutes(app: Express) {
     } catch (error) {
       res.status(400).json({ message: "Email already subscribed" });
     }
+  });
+
+  // Projects routes
+  app.get("/api/projects", async (_req, res) => {
+    const projects = await storage.getProjects();
+    res.json(projects);
+  });
+
+  app.get("/api/projects/featured", async (_req, res) => {
+    const projects = await storage.getFeaturedProjects();
+    res.json(projects);
+  });
+
+  app.get("/api/projects/:id", async (req, res) => {
+    const project = await storage.getProjectById(Number(req.params.id));
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+    res.json(project);
+  });
+
+  app.post("/api/projects", async (req, res) => {
+    const result = insertProjectSchema.safeParse(req.body);
+    if (!result.success) {
+      return res.status(400).json({ message: "Invalid project data" });
+    }
+    const project = await storage.createProject(result.data);
+    res.status(201).json(project);
+  });
+
+  // Profile routes
+  app.get("/api/profile", async (_req, res) => {
+    const profile = await storage.getProfile();
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+    res.json(profile);
+  });
+
+  app.put("/api/profile", async (req, res) => {
+    const result = insertProfileSchema.safeParse(req.body);
+    if (!result.success) {
+      return res.status(400).json({ message: "Invalid profile data" });
+    }
+    const profile = await storage.updateProfile(result.data);
+    res.json(profile);
   });
 
   return createServer(app);

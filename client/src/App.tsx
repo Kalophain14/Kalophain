@@ -4,33 +4,25 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/layout/header";
 import Home from "@/pages/home";
-import Updates from "@/pages/updates";
-import FireDrills from "@/pages/fire-drills";
+import Projects from "@/pages/projects";
+import Project from "@/pages/project";
 import NotFound from "@/pages/not-found";
 
-function Router() {
-  return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="container mx-auto px-4 py-8">
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/updates" component={Updates} />
-          <Route path="/fire-drills" component={FireDrills} />
-          <Route component={NotFound} />
-        </Switch>
-      </main>
-    </div>
-  );
-}
-
-function App() {
+export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router />
+      <div className="min-h-screen bg-background text-foreground antialiased">
+        <Header />
+        <main className="container mx-auto px-4 pt-20">
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/projects" component={Projects} />
+            <Route path="/project/:id" component={Project} />
+            <Route component={NotFound} />
+          </Switch>
+        </main>
+      </div>
       <Toaster />
     </QueryClientProvider>
   );
 }
-
-export default App;
