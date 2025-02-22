@@ -4,8 +4,9 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/layout/header";
 import Home from "@/pages/home";
-import Updates from "@/pages/updates";
-import FireDrills from "@/pages/fire-drills";
+import About from "@/pages/about";
+import Blog from "@/pages/blog";
+import Lifestyle from "@/pages/lifestyle";
 import NotFound from "@/pages/not-found";
 
 export default function App() {
@@ -16,8 +17,9 @@ export default function App() {
         <main className="container mx-auto px-4 pt-20">
           <Switch>
             <Route path="/" component={Home} />
-            <Route path="/updates" component={Updates} />
-            <Route path="/fire-drills" component={FireDrills} />
+            <Route path="/about" component={About} />
+            <Route path="/blog" component={Blog} />
+            <Route path="/lifestyle" component={Lifestyle} />
             <Route component={NotFound} />
           </Switch>
         </main>
