@@ -45,10 +45,10 @@ export const profile = pgTable("profile", {
   email: text("email").notNull(),
   location: text("location"),
   socialLinks: json("social_links").$type<{
-    twitter?: string;
-    instagram?: string;
-    github?: string;
-    linkedin?: string;
+    twitter: string | null;
+    instagram: string | null;
+    github: string | null;
+    linkedin: string | null;
   }>().notNull(),
 });
 

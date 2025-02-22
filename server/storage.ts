@@ -219,10 +219,10 @@ export class MemStorage implements IStorage {
       location: profile.location ?? null,
       avatarUrl: profile.avatarUrl ?? null,
       socialLinks: {
-        twitter: profile.socialLinks.twitter ?? undefined,
-        instagram: profile.socialLinks.instagram ?? undefined,
-        github: profile.socialLinks.github ?? undefined,
-        linkedin: profile.socialLinks.linkedin ?? undefined
+        twitter: profile.socialLinks?.twitter || null,
+        instagram: profile.socialLinks?.instagram || null,
+        github: profile.socialLinks?.github || null,
+        linkedin: profile.socialLinks?.linkedin || null
       }
     };
     this.profile = newProfile;
