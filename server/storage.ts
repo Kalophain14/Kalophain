@@ -117,7 +117,7 @@ export class MemStorage implements IStorage {
       name: "Temoso Chueu",
       title: "Full Stack Developer",
       bio: "Passionate developer crafting digital experiences with modern web technologies",
-      email: "john@example.com",
+      email: "temoso@example.com",
       location: "Cape Town, South Africa",
       socialLinks: {
         twitter: "https://x.com/kalophain?s=21",
@@ -216,13 +216,13 @@ export class MemStorage implements IStorage {
     const newProfile: Profile = { 
       ...profile, 
       id: 1,
-      location: profile.location || null,
-      avatarUrl: profile.avatarUrl || null,
+      location: profile.location ?? null,
+      avatarUrl: profile.avatarUrl ?? null,
       socialLinks: {
-        twitter: profile.socialLinks.twitter || undefined,
-        instagram: profile.socialLinks.instagram || undefined,
-        github: profile.socialLinks.github || undefined,
-        linkedin: profile.socialLinks.linkedin || undefined
+        twitter: profile.socialLinks.twitter ?? undefined,
+        instagram: profile.socialLinks.instagram ?? undefined,
+        github: profile.socialLinks.github ?? undefined,
+        linkedin: profile.socialLinks.linkedin ?? undefined
       }
     };
     this.profile = newProfile;
