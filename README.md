@@ -1,43 +1,36 @@
-# Nuclear Station Newsletter Web App
+# Personal Portfolio & Learning Journey
 
-A modern web application built with React and Express for sharing safety updates and fire drill information for a nuclear station. This application provides real-time status updates, safety notifications, and emergency drill schedules.
+This is my personal portfolio website showcasing my projects and documenting my journey in software development. Through this platform, I share my work, track my progress, and demonstrate my growing expertise in various technologies.
 
 ## Features
 
-- 🔔 Real-time safety updates and notifications
-- 🚨 Fire drill schedule management
-- 📊 Station status monitoring
-- 📱 Mobile-responsive design
-- 📬 Newsletter subscription system
-- 🔒 Secure data handling
+- 💼 Project Showcase - Highlighting my best work and technical achievements
+- 📝 Daily Updates - Tracking my learning progress and new skills
+- 🚀 Interactive UI - Modern, responsive design for optimal viewing on all devices
+- 💻 Project Details - In-depth looks at my development process and technical decisions
+- 🔗 Social Integration - Connected with my professional networks and GitHub
 
 ## Tech Stack
 
 ### Frontend
-- React with TypeScript
-- TanStack Query for data fetching
-- Tailwind CSS & shadcn/ui for styling
-- Framer Motion for animations
-- Wouter for routing
+- React with TypeScript for robust, type-safe development
+- TanStack Query for efficient data fetching
+- Tailwind CSS & shadcn/ui for modern, responsive styling
+- Framer Motion for smooth animations
+- Wouter for lightweight routing
 
 ### Backend
-- Express.js
-- Node.js
-- TypeScript
-- In-memory storage (upgradeable to PostgreSQL)
+- Express.js server
+- Node.js runtime
+- TypeScript for type safety
+- In-memory storage for rapid prototyping
 
-## Prerequisites
-
-Before you begin, ensure you have the following installed:
-- Node.js (v20 or later)
-- npm (comes with Node.js)
-
-## Installation
+## Getting Started
 
 1. Clone the repository:
 ```bash
-git clone [your-repository-url]
-cd nuclear-station-newsletter
+git clone https://github.com/Kalophain14/Kalophain.git
+cd portfolio
 ```
 
 2. Install dependencies:
@@ -45,30 +38,12 @@ cd nuclear-station-newsletter
 npm install
 ```
 
-## Running the Application
-
-1. Start the development server:
+3. Start the development server:
 ```bash
 npm run dev
 ```
 
-2. The server will automatically find an available port starting from 5000. Watch the console output for the actual port number, then open your browser and navigate to:
-```
-http://localhost:[PORT]
-```
-
-The server includes a health check endpoint at `/health` to verify the application status.
-
-## Environment Variables
-
-Create a `.env` file in the root directory with the following variables:
-
-```env
-PORT=5000                    # Preferred starting port (optional, defaults to 5000)
-NODE_ENV=development        # Application environment
-```
-
-Note: If the specified port is in use, the server will automatically try the next available port up to PORT+10.
+The application will automatically find an available port and start running. Check the console output for the URL.
 
 ## Project Structure
 
@@ -83,25 +58,22 @@ Note: If the specified port is in use, the server will automatically try the nex
 │   ├── routes.ts        # API routes
 │   └── storage.ts       # Data storage implementation
 └── shared/              # Shared types and schemas
-    └── schema.ts        # Type definitions and schemas
+    └── schema.ts        # Type definitions
 ```
 
-## Available API Endpoints
+## Features in Development
 
-- `GET /api/updates` - Get all safety updates
-- `GET /api/firedrills` - Get fire drill schedule
-- `POST /api/subscribe` - Subscribe to newsletter
-- `GET /health` - Check application status
+- Enhanced project filtering and search
+- Interactive timeline of learning milestones
+- Blog section for detailed technical write-ups
+- Integrated GitHub activity feed
+- Skill progression tracking
 
-## Development
+## Connect With Me
 
-The application uses TypeScript for type safety and better development experience. Key development features include:
-
-- Hot module replacement for rapid development
-- TypeScript compilation
-- Automatic server restart on changes
-- Comprehensive error logging
-- Automatic port selection on conflicts
+- GitHub: [Kalophain14](https://github.com/Kalophain14)
+- Twitter: [@kalophain](https://x.com/kalophain?s=21)
+- Instagram: [@kalophain14](https://www.instagram.com/kalophain14)
 
 ## License
 
