@@ -1,48 +1,43 @@
-# Portfolio Web Application
+# Nuclear Station Newsletter Web App
 
-A modern portfolio web application built with React and Express, featuring a clean design and smooth animations. This application showcases projects, provides safety updates, and includes a newsletter subscription system.
-
-## Tech Stack
-
-- **Frontend:**
-  - React
-  - TypeScript
-  - Tailwind CSS
-  - Shadcn/ui
-  - Framer Motion
-  - TanStack Query
-
-- **Backend:**
-  - Express.js
-  - Node.js
-  - TypeScript
-  - Drizzle ORM
-  - PostgreSQL
+A modern web application built with React and Express for sharing safety updates and fire drill information for a nuclear station. This application provides real-time status updates, safety notifications, and emergency drill schedules.
 
 ## Features
 
-- 🎨 Modern, responsive design with animations
-- 📱 Mobile-friendly interface
-- 🚀 Fast loading and smooth transitions
+- 🔔 Real-time safety updates and notifications
+- 🚨 Fire drill schedule management
+- 📊 Station status monitoring
+- 📱 Mobile-responsive design
 - 📬 Newsletter subscription system
-- 🔍 Project showcase with filtering
-- 📊 Real-time status updates
-- 🔥 Fire drill schedule management
-- 📱 Social media integration
+- 🔒 Secure data handling
+
+## Tech Stack
+
+### Frontend
+- React with TypeScript
+- TanStack Query for data fetching
+- Tailwind CSS & shadcn/ui for styling
+- Framer Motion for animations
+- Wouter for routing
+
+### Backend
+- Express.js
+- Node.js
+- TypeScript
+- In-memory storage (upgradeable to PostgreSQL)
 
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
 - Node.js (v20 or later)
 - npm (comes with Node.js)
-- Git
 
 ## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/Kalophain14/Kalophain.git
-cd Kalophain
+git clone [your-repository-url]
+cd nuclear-station-newsletter
 ```
 
 2. Install dependencies:
@@ -62,14 +57,15 @@ npm run dev
 http://localhost:3000
 ```
 
+The server includes a health check endpoint at `/health` to verify the application status.
+
 ## Environment Variables
 
 Create a `.env` file in the root directory with the following variables:
 
 ```env
-PORT=3000
-DATABASE_URL=your_database_url
-SENDGRID_API_KEY=your_sendgrid_api_key
+PORT=3000                    # Application port (optional, defaults to 3000)
+NODE_ENV=development        # Application environment
 ```
 
 ## Project Structure
@@ -85,16 +81,24 @@ SENDGRID_API_KEY=your_sendgrid_api_key
 │   ├── routes.ts        # API routes
 │   └── storage.ts       # Data storage implementation
 └── shared/              # Shared types and schemas
-    └── schema.ts        # Database schema and types
+    └── schema.ts        # Type definitions and schemas
 ```
 
-## Contributing
+## Available API Endpoints
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+- `GET /api/updates` - Get all safety updates
+- `GET /api/firedrills` - Get fire drill schedule
+- `POST /api/subscribe` - Subscribe to newsletter
+- `GET /health` - Check application status
+
+## Development
+
+The application uses TypeScript for type safety and better development experience. Key development features include:
+
+- Hot module replacement for rapid development
+- TypeScript compilation
+- Automatic server restart on changes
+- Comprehensive error logging
 
 ## License
 
