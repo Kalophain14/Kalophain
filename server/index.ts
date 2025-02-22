@@ -53,9 +53,14 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // Use PORT environment variable with fallback to 3000
   const port = Number(process.env.PORT) || 3000;
-  log(`Attempting to start server on port ${port}...`);
+  log(`Starting server initialization...`);
+  log(`Configuration: PORT=${port}, ENV=${app.get("env")}`);
+
+  // Add a health check endpoint
+  app.get("/health", (_req, res) => {
+    res.json({ status: "healthy", port, env: app.get("env") });
+  });
 
   server.listen({
     port,
@@ -64,5 +69,6 @@ app.use((req, res, next) => {
   }, () => {
     log(`Server running successfully at http://0.0.0.0:${port}`);
     log(`Environment: ${app.get("env")}`);
+    log(`Health check available at http://0.0.0.0:${port}/health`);
   });
 })();
