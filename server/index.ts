@@ -53,7 +53,7 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  const port = Number(process.env.PORT) || 3000;
+  const port = Number(process.env.PORT) || 5000; 
   log(`Starting server initialization...`);
   log(`Configuration: PORT=${port}, ENV=${app.get("env")}`);
 

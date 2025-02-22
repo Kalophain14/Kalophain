@@ -54,7 +54,7 @@ npm run dev
 
 2. Open your browser and navigate to:
 ```
-http://localhost:3000
+http://localhost:5000
 ```
 
 The server includes a health check endpoint at `/health` to verify the application status.
@@ -64,7 +64,7 @@ The server includes a health check endpoint at `/health` to verify the applicati
 Create a `.env` file in the root directory with the following variables:
 
 ```env
-PORT=3000                    # Application port (optional, defaults to 3000)
+PORT=5000                    # Application port (optional, defaults to 5000)
 NODE_ENV=development        # Application environment
 ```
 
