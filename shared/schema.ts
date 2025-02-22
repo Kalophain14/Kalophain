@@ -2,28 +2,6 @@ import { pgTable, text, serial, timestamp, json, boolean } from "drizzle-orm/pg-
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const updates = pgTable("updates", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  content: text("content").notNull(),
-  category: text("category").notNull(), // 'safety', 'maintenance', 'general'
-  isUrgent: boolean("is_urgent").default(false),
-  date: timestamp("date").defaultNow().notNull(),
-});
-
-export const firedrills = pgTable("firedrills", {
-  id: serial("id").primaryKey(),
-  location: text("location").notNull(),
-  date: timestamp("date").notNull(),
-  description: text("description").notNull(),
-  status: text("status").notNull(), // 'scheduled', 'completed', 'cancelled'
-});
-
-export const subscribers = pgTable("subscribers", {
-  id: serial("id").primaryKey(),
-  email: text("email").notNull().unique(),
-});
-
 export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -52,19 +30,37 @@ export const profile = pgTable("profile", {
   }>().notNull(),
 });
 
-export const insertUpdateSchema = createInsertSchema(updates).omit({ id: true });
-export const insertFiredrillSchema = createInsertSchema(firedrills).omit({ id: true });
-export const insertSubscriberSchema = createInsertSchema(subscribers).omit({ id: true });
+export const blog_posts = pgTable("blog_posts", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  excerpt: text("excerpt").notNull(),
+  slug: text("slug").notNull().unique(),
+  published: boolean("published").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const music_tracks = pgTable("music_tracks", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  imageUrl: text("image_url").notNull(),
+  audioUrl: text("audio_url").notNull(),
+  category: text("category").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const insertProjectSchema = createInsertSchema(projects).omit({ id: true, createdAt: true });
 export const insertProfileSchema = createInsertSchema(profile).omit({ id: true });
+export const insertBlogPostSchema = createInsertSchema(blog_posts).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertMusicTrackSchema = createInsertSchema(music_tracks).omit({ id: true, createdAt: true });
 
-export type Update = typeof updates.$inferSelect;
-export type InsertUpdate = z.infer<typeof insertUpdateSchema>;
-export type Firedrill = typeof firedrills.$inferSelect;
-export type InsertFiredrill = z.infer<typeof insertFiredrillSchema>;
-export type Subscriber = typeof subscribers.$inferSelect;
-export type InsertSubscriber = z.infer<typeof insertSubscriberSchema>;
 export type Project = typeof projects.$inferSelect;
 export type InsertProject = z.infer<typeof insertProjectSchema>;
 export type Profile = typeof profile.$inferSelect;
 export type InsertProfile = z.infer<typeof insertProfileSchema>;
+export type BlogPost = typeof blog_posts.$inferSelect;
+export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
+export type MusicTrack = typeof music_tracks.$inferSelect;
+export type InsertMusicTrack = z.infer<typeof insertMusicTrackSchema>;

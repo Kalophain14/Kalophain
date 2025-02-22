@@ -6,7 +6,9 @@ import Header from "@/components/layout/header";
 import Home from "@/pages/home";
 import About from "@/pages/about";
 import Blog from "@/pages/blog";
-import Lifestyle from "@/pages/lifestyle";
+import Music from "@/pages/music";
+import Projects from "@/pages/projects";
+import Project from "@/pages/project";
 import NotFound from "@/pages/not-found";
 
 export default function App() {
@@ -19,7 +21,9 @@ export default function App() {
             <Route path="/" component={Home} />
             <Route path="/about" component={About} />
             <Route path="/blog" component={Blog} />
-            <Route path="/lifestyle" component={Lifestyle} />
+            <Route path="/music" component={Music} />
+            <Route path="/projects" component={Projects} />
+            <Route path="/projects/:id" component={Project} />
             <Route component={NotFound} />
           </Switch>
         </main>

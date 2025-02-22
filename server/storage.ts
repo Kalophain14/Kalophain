@@ -1,21 +1,7 @@
-import { type Update, type InsertUpdate, type Firedrill, type InsertFiredrill, type Subscriber, type InsertSubscriber } from "@shared/schema";
 import { type Project, type InsertProject, type Profile, type InsertProfile } from "@shared/schema";
+import { type BlogPost, type InsertBlogPost, type MusicTrack, type InsertMusicTrack } from "@shared/schema";
 
 export interface IStorage {
-  // Updates
-  getUpdates(): Promise<Update[]>;
-  getUpdateById(id: number): Promise<Update | undefined>;
-  createUpdate(update: InsertUpdate): Promise<Update>;
-
-  // Fire Drills
-  getFiredrills(): Promise<Firedrill[]>;
-  getFiredrillById(id: number): Promise<Firedrill | undefined>;
-  createFiredrill(firedrill: InsertFiredrill): Promise<Firedrill>;
-
-  // Subscribers
-  getSubscribers(): Promise<Subscriber[]>;
-  createSubscriber(subscriber: InsertSubscriber): Promise<Subscriber>;
-
   // Projects
   getProjects(): Promise<Project[]>;
   getProjectById(id: number): Promise<Project | undefined>;
@@ -25,71 +11,42 @@ export interface IStorage {
   // Profile
   getProfile(): Promise<Profile | undefined>;
   updateProfile(profile: InsertProfile): Promise<Profile>;
+
+  // Blog Posts
+  getBlogPosts(): Promise<BlogPost[]>;
+  getBlogPostBySlug(slug: string): Promise<BlogPost | undefined>;
+  createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
+
+  // Music
+  getMusicTracks(): Promise<MusicTrack[]>;
+  getMusicTrackById(id: number): Promise<MusicTrack | undefined>;
+  createMusicTrack(track: InsertMusicTrack): Promise<MusicTrack>;
 }
 
 export class MemStorage implements IStorage {
-  private updates: Map<number, Update>;
-  private firedrills: Map<number, Firedrill>;
-  private subscribers: Map<number, Subscriber>;
   private projects: Map<number, Project>;
   private profile: Profile | undefined;
-  private currentIds: { updates: number; firedrills: number; subscribers: number; projects: number };
+  private blogPosts: Map<number, BlogPost>;
+  private musicTracks: Map<number, MusicTrack>;
+  private currentIds: { 
+    projects: number; 
+    blogPosts: number;
+    musicTracks: number;
+  };
 
   constructor() {
-    this.updates = new Map();
-    this.firedrills = new Map();
-    this.subscribers = new Map();
     this.projects = new Map();
-    this.currentIds = { updates: 1, firedrills: 1, subscribers: 1, projects: 1 };
+    this.blogPosts = new Map();
+    this.musicTracks = new Map();
+    this.currentIds = { 
+      projects: 1, 
+      blogPosts: 1,
+      musicTracks: 1
+    };
     this.initializeMockData();
   }
 
   private initializeMockData() {
-    // Mock updates
-    const mockUpdates: InsertUpdate[] = [
-      {
-        title: "Routine Maintenance Schedule",
-        content: "Annual maintenance check of reactor cooling systems scheduled for next week.",
-        category: "maintenance",
-        isUrgent: false,
-        date: new Date(),
-      },
-      {
-        title: "Safety Protocol Update",
-        content: "New safety protocols implemented for radiation monitoring.",
-        category: "safety",
-        isUrgent: true,
-        date: new Date(),
-      },
-    ];
-
-    mockUpdates.forEach(update => {
-      const id = this.currentIds.updates++;
-      const newUpdate = { 
-        ...update, 
-        id, 
-        date: update.date || new Date(),
-        isUrgent: update.isUrgent === undefined ? false : update.isUrgent 
-      };
-      this.updates.set(id, newUpdate);
-    });
-
-    // Mock fire drills
-    const mockFiredrills: InsertFiredrill[] = [
-      {
-        location: "Reactor Building A",
-        date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        description: "Quarterly emergency response drill",
-        status: "scheduled",
-      },
-      {
-        location: "Control Room Complex",
-        date: new Date(Date.now() - 24 * 60 * 60 * 1000),
-        description: "Standard evacuation procedure test",
-        status: "completed",
-      },
-    ];
-
     // Sample projects
     const mockProjects: InsertProject[] = [
       {
@@ -127,55 +84,46 @@ export class MemStorage implements IStorage {
       },
     };
 
-    mockFiredrills.forEach(drill => this.createFiredrill(drill));
+    // Sample blog posts
+    const mockBlogPosts: InsertBlogPost[] = [
+      {
+        title: "Building Modern Web Applications",
+        content: "In this post, we'll explore the latest trends and best practices in web development...",
+        excerpt: "Exploring the latest trends and best practices in web development",
+        slug: "building-modern-web-applications",
+        published: true,
+      },
+      {
+        title: "My Journey in Tech",
+        content: "Starting my journey in tech wasn't easy, but here's what I've learned...",
+        excerpt: "Reflecting on my experiences and growth as a developer",
+        slug: "my-journey-in-tech",
+        published: true,
+      },
+    ];
+
+    // Sample music tracks
+    const mockMusicTracks: InsertMusicTrack[] = [
+      {
+        title: "Latest Tracks",
+        description: "My recent musical creations and experiments",
+        imageUrl: "https://images.unsplash.com/photo-1511379938547-c1f69419868d",
+        audioUrl: "/music/latest-tracks.mp3",
+        category: "electronic",
+      },
+      {
+        title: "Ambient Collection",
+        description: "A collection of ambient soundscapes",
+        imageUrl: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea",
+        audioUrl: "/music/ambient-collection.mp3",
+        category: "ambient",
+      },
+    ];
+
     mockProjects.forEach(project => this.createProject(project));
+    mockBlogPosts.forEach(post => this.createBlogPost(post));
+    mockMusicTracks.forEach(track => this.createMusicTrack(track));
     this.updateProfile(mockProfile);
-  }
-
-  async getUpdates(): Promise<Update[]> {
-    return Array.from(this.updates.values()).sort((a, b) => b.date.getTime() - a.date.getTime());
-  }
-
-  async getUpdateById(id: number): Promise<Update | undefined> {
-    return this.updates.get(id);
-  }
-
-  async createUpdate(update: InsertUpdate): Promise<Update> {
-    const id = this.currentIds.updates++;
-    const newUpdate = { 
-      ...update, 
-      id, 
-      date: update.date || new Date(),
-      isUrgent: update.isUrgent === undefined ? false : update.isUrgent 
-    };
-    this.updates.set(id, newUpdate);
-    return newUpdate;
-  }
-
-  async getFiredrills(): Promise<Firedrill[]> {
-    return Array.from(this.firedrills.values()).sort((a, b) => a.date.getTime() - b.date.getTime());
-  }
-
-  async getFiredrillById(id: number): Promise<Firedrill | undefined> {
-    return this.firedrills.get(id);
-  }
-
-  async createFiredrill(firedrill: InsertFiredrill): Promise<Firedrill> {
-    const id = this.currentIds.firedrills++;
-    const newFiredrill = { ...firedrill, id };
-    this.firedrills.set(id, newFiredrill);
-    return newFiredrill;
-  }
-
-  async getSubscribers(): Promise<Subscriber[]> {
-    return Array.from(this.subscribers.values());
-  }
-
-  async createSubscriber(subscriber: InsertSubscriber): Promise<Subscriber> {
-    const id = this.currentIds.subscribers++;
-    const newSubscriber = { ...subscriber, id };
-    this.subscribers.set(id, newSubscriber);
-    return newSubscriber;
   }
 
   async getProjects(): Promise<Project[]> {
@@ -227,6 +175,48 @@ export class MemStorage implements IStorage {
     };
     this.profile = newProfile;
     return newProfile;
+  }
+
+  async getBlogPosts(): Promise<BlogPost[]> {
+    return Array.from(this.blogPosts.values())
+      .filter(post => post.published)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+
+  async getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
+    return Array.from(this.blogPosts.values()).find(post => post.slug === slug);
+  }
+
+  async createBlogPost(post: InsertBlogPost): Promise<BlogPost> {
+    const id = this.currentIds.blogPosts++;
+    const newPost = {
+      ...post,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.blogPosts.set(id, newPost);
+    return newPost;
+  }
+
+  async getMusicTracks(): Promise<MusicTrack[]> {
+    return Array.from(this.musicTracks.values())
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+
+  async getMusicTrackById(id: number): Promise<MusicTrack | undefined> {
+    return this.musicTracks.get(id);
+  }
+
+  async createMusicTrack(track: InsertMusicTrack): Promise<MusicTrack> {
+    const id = this.currentIds.musicTracks++;
+    const newTrack = {
+      ...track,
+      id,
+      createdAt: new Date(),
+    };
+    this.musicTracks.set(id, newTrack);
+    return newTrack;
   }
 }
 
