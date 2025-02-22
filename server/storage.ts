@@ -194,6 +194,7 @@ export class MemStorage implements IStorage {
       id,
       createdAt: new Date(),
       updatedAt: new Date(),
+      published: post.published ?? false, // Ensure published is never undefined
     };
     this.blogPosts.set(id, newPost);
     return newPost;
