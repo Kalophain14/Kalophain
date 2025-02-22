@@ -122,8 +122,8 @@ export class MemStorage implements IStorage {
       socialLinks: {
         twitter: "https://x.com/kalophain?s=21",
         instagram: "https://www.instagram.com/kalophain14",
-        github: "https://github.com/johndoe",
-        linkedin: "https://linkedin.com/in/johndoe",
+        github: "https://github.com/Kalophain14",
+        linkedin: null
       },
     };
 

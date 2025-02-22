@@ -53,22 +53,52 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  const port = Number(process.env.PORT) || 5000; 
-  log(`Starting server initialization...`);
-  log(`Configuration: PORT=${port}, ENV=${app.get("env")}`);
+  // Try a range of ports starting from the preferred port
+  const startPort = Number(process.env.PORT) || 5000;
+  const maxPort = startPort + 10; // Try up to 10 ports
+  let currentPort = startPort;
+  let serverStarted = false;
 
-  // Add a health check endpoint
+  while (currentPort <= maxPort && !serverStarted) {
+    try {
+      await new Promise((resolve, reject) => {
+        server.listen({
+          port: currentPort,
+          host: "0.0.0.0",
+          reusePort: true,
+        }, () => {
+          log(`Server initialization successful`);
+          log(`Configuration: PORT=${currentPort}, ENV=${app.get("env")}`);
+          log(`Server running at http://0.0.0.0:${currentPort}`);
+          log(`Health check available at http://0.0.0.0:${currentPort}/health`);
+          serverStarted = true;
+          resolve(true);
+        }).on('error', (err: any) => {
+          if (err.code === 'EADDRINUSE') {
+            currentPort++;
+            resolve(false);
+          } else {
+            reject(err);
+          }
+        });
+      });
+    } catch (error) {
+      log(`Failed to start server: ${error}`);
+      process.exit(1);
+    }
+  }
+
+  if (!serverStarted) {
+    log(`Could not find an available port between ${startPort} and ${maxPort}`);
+    process.exit(1);
+  }
+
+  // Add health check endpoint
   app.get("/health", (_req, res) => {
-    res.json({ status: "healthy", port, env: app.get("env") });
-  });
-
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`Server running successfully at http://0.0.0.0:${port}`);
-    log(`Environment: ${app.get("env")}`);
-    log(`Health check available at http://0.0.0.0:${port}/health`);
+    res.json({ 
+      status: "healthy", 
+      port: currentPort, 
+      env: app.get("env") 
+    });
   });
 })();

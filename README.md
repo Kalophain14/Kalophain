@@ -52,9 +52,9 @@ npm install
 npm run dev
 ```
 
-2. Open your browser and navigate to:
+2. The server will automatically find an available port starting from 5000. Watch the console output for the actual port number, then open your browser and navigate to:
 ```
-http://localhost:5000
+http://localhost:[PORT]
 ```
 
 The server includes a health check endpoint at `/health` to verify the application status.
@@ -64,9 +64,11 @@ The server includes a health check endpoint at `/health` to verify the applicati
 Create a `.env` file in the root directory with the following variables:
 
 ```env
-PORT=5000                    # Application port (optional, defaults to 5000)
+PORT=5000                    # Preferred starting port (optional, defaults to 5000)
 NODE_ENV=development        # Application environment
 ```
+
+Note: If the specified port is in use, the server will automatically try the next available port up to PORT+10.
 
 ## Project Structure
 
@@ -99,6 +101,7 @@ The application uses TypeScript for type safety and better development experienc
 - TypeScript compilation
 - Automatic server restart on changes
 - Comprehensive error logging
+- Automatic port selection on conflicts
 
 ## License
 
